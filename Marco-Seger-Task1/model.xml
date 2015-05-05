@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<featureModel chosenLayoutAlgorithm="1">
+		<struct>
+			<and abstract="true" mandatory="true" name="Vokabeltrainer">
+				<description>
+					Wurzel-/Kernfeature. Der Vokabeltrainer ist eine Lernsoftware für das Üben von Vokabeln. Der Benutzer bekommt ein "Karteikärtchen" mit einer Vokabel und muss die richtige Übersetzung eingeben.
+				</description>
+				<or mandatory="true" name="Reihenfolge">
+					<description>
+						Die Reihenfolge, in der der Benutzer die Vokabeln bekommt.
+					</description>
+					<feature mandatory="true" name="Zufällige Reihenfolge">
+						<description>
+							Zufällige Reihenfolge der Vokabeln.
+						</description>
+					</feature>
+					<feature mandatory="true" name="Chronologische Reihenfolge">
+						<description>
+							Chronologische Reihenfolge der Vokabeln. Der Benutzer bekommt die Vokabeln in der Reihenfolge, wie diese angelegt bzw. importiert wurden.
+						</description>
+					</feature>
+					<feature mandatory="true" name="Statistikorientierte Reihenfolge">
+						<description>
+							Statistikorientierte Reihenfolge der Variabeln. Der Benutzer bekommt die Vokabeln in Abhängigkeit der Statistik (welche Vokabeln der Benutzer häufig falsch beantwortet hat).
+						</description>
+					</feature>
+				</or>
+				<or name="Vokabel-Export">
+					<description>
+						Exportieren von Vokabeln mit Übersetzung.
+					</description>
+					<feature mandatory="true" name="Datenbank-Export">
+						<description>
+							Exportieren von Vokabeln mit Übersetzung in eine Datenbank.
+						</description>
+					</feature>
+					<feature mandatory="true" name="JSON-Export">
+						<description>
+							Exportieren von Vokabeln mit Übersetzung in ein/e JSON-Format/-Datei.
+						</description>
+					</feature>
+					<feature mandatory="true" name="XML-Export">
+						<description>
+							Exportieren von Vokabeln mit Übersetzung in ein/e XML-Format/-Datei.
+						</description>
+					</feature>
+					<feature mandatory="true" name="TXT-Export">
+						<description>
+							Exportieren von Vokabeln mit Übersetzung in eine TXT-Datei.
+						</description>
+					</feature>
+				</or>
+				<or name="Vokabel-Import">
+					<description>
+						Importieren von Vokabeln mit Übersetzung.
+					</description>
+					<feature mandatory="true" name="Datenbank-Import">
+						<description>
+							Importieren von Vokabeln mit Übersetzung aus einer Datenbank.
+						</description>
+					</feature>
+					<feature mandatory="true" name="JSON-Import">
+						<description>
+							Importieren von Vokabeln mit Übersetzungen aus einer JSON-Datei.
+						</description>
+					</feature>
+					<feature mandatory="true" name="XML-Import">
+						<description>
+							Importieren von Vokabeln mit Übersetzungen aus einer XML-Datei.
+						</description>
+					</feature>
+					<feature mandatory="true" name="TXT-Import">
+						<description>
+							Importieren von Vokabeln mit Übersetzungen aus einer TXT-Datei.
+						</description>
+					</feature>
+				</or>
+				<and name="Statistik">
+					<description>
+						Anlegen und Führung einer Statisitik zur Protokollierung des Lernerfolgs.
+					</description>
+					<feature name="Benutzerspezifische Statistik">
+						<description>
+							Benutzerspezifische/-eigene Statistik.
+						</description>
+					</feature>
+					<feature name="Persistierte Statistik">
+						<description>
+							Statistik, die beim Beenden des Vokabeltrainers gespeichert und beim Starten wieder geladen wird.
+						</description>
+					</feature>
+					<feature name="Session-Statistik">
+						<description>
+							Statistik für eine Lern-Session (bis zum Beenden des Vokabeltrainers).
+						</description>
+					</feature>
+				</and>
+				<and name="Benutzerverwaltung">
+					<description>
+						Mehrere Benutzerkonten.
+					</description>
+					<feature name="Login">
+						<description>
+							Login mit Authentifizierung des Benutzers.
+						</description>
+					</feature>
+				</and>
+				<feature name="Mehrfachlösung">
+					<description>
+						Möglichkeit für mehrere erlaubte Übersetzungen einer Vokabel.
+					</description>
+				</feature>
+				<feature name="Vokabel-Anlegen">
+					<description>
+						Anlegen von Vokabeln mit Übersetzungen innerhalb des Vokabeltrainers.
+					</description>
+				</feature>
+			</and>
+		</struct>
+		<constraints>
+			<rule>
+				<imp>
+					<var>Statistikorientierte Reihenfolge</var>
+					<var>Statistik</var>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<var>Vokabel-Export</var>
+					<disj>
+						<var>Vokabel-Import</var>
+						<var>Vokabel-Anlegen</var>
+					</disj>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<var>Benutzerspezifische Statistik</var>
+					<var>Benutzerverwaltung</var>
+				</imp>
+			</rule>
+		</constraints>
+		<calculations Auto="true" Constraints="true" Features="true" Redundant="true" Tautology="true"/>
+		<comments/>
+		<featureOrder userDefined="false"/>
+	</featureModel>

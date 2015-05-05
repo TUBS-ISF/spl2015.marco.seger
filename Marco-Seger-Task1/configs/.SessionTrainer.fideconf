@@ -1,0 +1,25 @@
+# Lists all features from the model with manual (first digit) and automatic (second digit) selection
+# 0 = deselected, 1 = selected, 2 = undefined
+21Vokabeltrainer
+21Reihenfolge
+12Zufällige Reihenfolge
+12Chronologische Reihenfolge
+12Statistikorientierte Reihenfolge
+22Vokabel-Export
+22Datenbank-Export
+22JSON-Export
+22XML-Export
+22TXT-Export
+22Vokabel-Import
+22Datenbank-Import
+22JSON-Import
+22XML-Import
+22TXT-Import
+21Statistik
+22Benutzerspezifische Statistik
+22Persistierte Statistik
+12Session-Statistik
+22Benutzerverwaltung
+22Login
+22Mehrfachlösung
+12Vokabel-Anlegen
