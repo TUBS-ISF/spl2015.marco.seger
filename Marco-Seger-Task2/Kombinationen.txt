@@ -1,0 +1,9 @@
+Dokumentation der Kombinationen
+
+1.	Ohne Angabe von Features startet das Programm nicht, da mindestens eine Reihenfolge gewählt werden muss (siehe Feature-Baum).
+2. -av -co -ro : Alle derzeit implementierten Features vorhanden. Der Benutzer kann Vokabeln anlegen und hat die Möglichkeit zwischen chronologischer und zufälliger Reihenfolge zu wählen.
+3. -av -co : Der Benutzer kann Vokabeln anlegen und bekommt die Vokabeln in chronologischer Reihenfolge.
+4. -av -ro : Der Benutzer kann Vokabeln anlegen und bekommt die Vokabeln in zufälliger Reihenfolge.
+
+
+Hinweis: Das Starten des Vokabeltrainers ohne -av ist möglich, aber nicht sinnvoll, da zur Zeit keine andere Möglichkeit besteht Vokabeln anzulegen/zu importieren. 
