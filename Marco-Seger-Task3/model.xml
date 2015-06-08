@@ -2,7 +2,7 @@
 	<featureModel chosenLayoutAlgorithm="1">
 		<struct>
 			<and abstract="true" mandatory="true" name="Vokabeltrainer">
-				<or mandatory="true" name="Reihenfolge">
+				<or abstract="true" mandatory="true" name="Reihenfolge">
 					<feature mandatory="true" name="ZufaelligeReihenfolge"/>
 					<feature mandatory="true" name="ChronologischeReihenfolge"/>
 					<feature abstract="true" mandatory="true" name="StatistikorientierteReihenfolge"/>
@@ -24,7 +24,10 @@
 					<feature abstract="true" name="PersistierteStatistik"/>
 					<feature abstract="true" name="SessionStatistik"/>
 				</and>
-				<feature abstract="true" name="Mehrfachloesung"/>
+				<alt abstract="true" name="AnzahlUebersetzungen">
+					<feature mandatory="true" name="Mehrfachloesung"/>
+					<feature mandatory="true" name="Einfachloesung"/>
+				</alt>
 				<feature name="VokabelAnlegen"/>
 				<and abstract="true" name="Benutzerverwaltung">
 					<feature abstract="true" name="Login"/>
