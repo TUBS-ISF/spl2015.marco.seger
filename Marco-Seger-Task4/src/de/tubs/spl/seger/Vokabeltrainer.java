@@ -6,12 +6,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -21,30 +21,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import de.tubs.spl.seger.Vokabelliste.Reihenfolge;
 
 public class Vokabeltrainer extends JFrame {
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-
-		new Vokabeltrainer();
-	}
-
 	private Vokabelliste vokabelliste = new Vokabelliste();
+	private Reihenfolge reihenfolge = new ChronologischeReihenfolge(vokabelliste);
+	private AnzahlLoesung loesung = new EinfachLoesung();
 
 	private JLabel vokabelLabel;
 	private JTextField eingabeFeld;
@@ -53,108 +35,105 @@ public class Vokabeltrainer extends JFrame {
 	public Vokabeltrainer() {
 		super("Vokabeltrainer");
 
-		JPanel panel = new JPanel();
 		JMenuBar menuBar = new JMenuBar();
 		this.add(menuBar, BorderLayout.NORTH);
 
-		// #ifdef VokabelAnlegen
 		JMenu menuVokabelliste = new JMenu("Vokabelliste");
 		menuBar.add(menuVokabelliste);
-		JMenuItem menuItemEditVokabelliste = new JMenuItem(
-				"Vokabel hinzufuegen");
+		JMenuItem menuItemEditVokabelliste = new JMenuItem("Vokabel hinzufuegen");
 		menuVokabelliste.add(menuItemEditVokabelliste);
 
 		menuItemEditVokabelliste.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String antwort = null;
-				// #ifdef Einfachloesung
-//@
-//@				antwort = JOptionPane.showInputDialog(
-//@						Vokabeltrainer.this,
-//@						"Vokabel hinzufuegen (Vokabel:Uebersetzung)");
-//@				if (antwort != null) {
-//@					String[] token = antwort.split(":");
-//@					if (token.length != 2) {
-//@						JOptionPane
-//@								.showMessageDialog(
-//@										Vokabeltrainer.this,
-//@										"Nutzen Sie folgende Syntax: Vokabel:Uebersetzung",
-//@										"Falsche Syntax",
-//@										JOptionPane.ERROR_MESSAGE);
-//@					} else {
-//@						Vokabel vokabel = new Vokabel(token[0], token[1]);
-//@						Vokabeltrainer.this.vokabelliste.addVokabel(vokabel);
-//@					}
-//@				}
-				//#endif
-				
-				// #ifdef Mehrfachloesung
-				antwort = JOptionPane.showInputDialog(
-						Vokabeltrainer.this,
-						"Vokabel hinzufuegen (Vokabel:Uebersetzung1:Uebersetzung2:...)");
-				if (antwort != null) {
-					String[] token = antwort.split(":");
-					if (token.length < 2) {
-						JOptionPane
-								.showMessageDialog(
-										Vokabeltrainer.this,
-										"Nutzen Sie folgende Syntax: Vokabel:Uebersetzung1[:Uebersetzung2:...]",
-										"Falsche Syntax",
-										JOptionPane.ERROR_MESSAGE);
-					} else {
-						List<String> uebersetzungen = new ArrayList<String>(Arrays.asList(token));
-						uebersetzungen.remove(0);
-						Vokabel vokabel = new Vokabel(token[0], uebersetzungen);
-						Vokabeltrainer.this.vokabelliste.addVokabel(vokabel);
-					}
+				Vokabel vokabel = loesung.openAddDialog();
+				if (vokabel != null) {
+					vokabelliste.addVokabel(vokabel);
 				}
-				//#endif
 			}
 		});
-		// #endif
+		
+		JMenuItem menuItemExportVokabelliste = new JMenuItem("Vokabelliste exportieren");
+		menuVokabelliste.add(menuItemExportVokabelliste);
+		menuItemExportVokabelliste.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser();
+				 
+				int userSelection = fileChooser.showSaveDialog(null);
+				 
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+				    File file = fileChooser.getSelectedFile();
+				    VokabelExport vokabelExport = new VokabelExportTXT();
+				    try {
+						vokabelExport.exportVokabelliste(vokabelliste, file);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		JMenuItem menuItemImportVokabelliste = new JMenuItem("Vokabelliste importieren");
+		menuVokabelliste.add(menuItemImportVokabelliste);
+		menuItemImportVokabelliste.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				Vokabelliste vokabelliste = null;
+				JFileChooser fileChooser = new JFileChooser();
+				 
+				int userSelection = fileChooser.showOpenDialog(null);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+				    File file = fileChooser.getSelectedFile();
+				    VokabelImport vokabelImport = new VokabelImportTXT();
+				    try {
+				    	vokabelliste = vokabelImport.importVokabelliste(file);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				    if (vokabelliste != null) {
+				    	Vokabeltrainer.this.vokabelliste = vokabelliste;
+				    	Vokabeltrainer.this.reihenfolge.setVokabelliste(vokabelliste);
+				    }
+				}
+			}
+		});
 
 		JMenu menuReihenfolge = new JMenu("Reihenfolge");
 		menuBar.add(menuReihenfolge);
 		ButtonGroup group = new ButtonGroup();
 
-		// #ifdef ChronologischeReihenfolge
 		 JRadioButtonMenuItem menuItemChronologisch = new JRadioButtonMenuItem("Chronologisch");
 		 menuReihenfolge.add(menuItemChronologisch);
 		 group.add(menuItemChronologisch);
-		 Vokabeltrainer.this.vokabelliste
-		 .setReihenfolge(Reihenfolge.CHRONOLOGISCH);
 		 menuItemChronologisch.setSelected(true);
 		 menuItemChronologisch.addActionListener(new ActionListener() {
 		
 		 @Override
 		 public void actionPerformed(ActionEvent e) {
-		 Vokabeltrainer.this.vokabelliste
-		 .setReihenfolge(Reihenfolge.CHRONOLOGISCH);
-		
+			 Vokabeltrainer.this.reihenfolge = new ChronologischeReihenfolge(vokabelliste);
 		 }
 		 });
-		// #endif
 
-		// #ifdef ZufaelligeReihenfolge
 		JRadioButtonMenuItem menuItemZufaellig = new JRadioButtonMenuItem(
 				"Zufaellig");
 		menuReihenfolge.add(menuItemZufaellig);
 		group.add(menuItemZufaellig);
-		Vokabeltrainer.this.vokabelliste.setReihenfolge(Reihenfolge.ZUFAELLIG);
-		menuItemZufaellig.setSelected(true);
 		menuItemZufaellig.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Vokabeltrainer.this.vokabelliste
-						.setReihenfolge(Reihenfolge.ZUFAELLIG);
-
+				Vokabeltrainer.this.reihenfolge = new ZufaelligeReihenfolge(vokabelliste);
 			}
 		});
-		// #endif
 
+		
+		
+		JPanel panel = new JPanel();
 		this.add(panel);
 		panel.setLayout(new GridBagLayout());
 		GridBagConstraints c;
@@ -191,10 +170,10 @@ public class Vokabeltrainer extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// Vokabel testen
 				if (!vokabelliste.isEmpty()) {
-					if (vokabelliste.getAktuelleVokabel() != null) {
+					if (reihenfolge.getAktuelleVokabel() != null) {
 						String eingabe = Vokabeltrainer.this.eingabeFeld
 								.getText();
-						boolean richtigeAntwort = vokabelliste
+						boolean richtigeAntwort = reihenfolge
 								.getAktuelleVokabel().verify(eingabe);
 						String antwort;
 						if (richtigeAntwort) {
@@ -207,8 +186,7 @@ public class Vokabeltrainer extends JFrame {
 
 						// naechste Vokabel
 						Vokabeltrainer.this.eingabeFeld.setText("");
-						Vokabeltrainer.this.vokabelLabel.setText(vokabelliste
-								.next().getVokabel());
+						Vokabeltrainer.this.vokabelLabel.setText(reihenfolge.getNext().getVokabel());
 					}
 
 				} else {
@@ -230,8 +208,8 @@ public class Vokabeltrainer extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!vokabelliste.isEmpty()) {
-					Vokabeltrainer.this.vokabelLabel.setText(vokabelliste
-							.next().getVokabel());
+					Vokabeltrainer.this.vokabelLabel.setText(reihenfolge
+							.getNext().getVokabel());
 				} else {
 					JOptionPane.showMessageDialog(Vokabeltrainer.this,
 							"Keine Vokabeln vorhanden.");
