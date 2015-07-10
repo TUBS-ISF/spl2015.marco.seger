@@ -1,3 +1,13 @@
 eclipse.preferences.version=1
+encoding//configs/.FullTrainer.fideconf=UTF-8
+encoding//configs/.MultiSolution.fideconf=UTF-8
+encoding//configs/.SmallTrainer.fideconf=UTF-8
+encoding//configs/.TXTImportExport.fideconf=UTF-8
+encoding//configs/.TXTImportExportMultiSolution.fideconf=UTF-8
 encoding//configs/.default.fideconf=UTF-8
+encoding//configs/FullTrainer.config=UTF-8
+encoding//configs/MultiSolution.config=UTF-8
+encoding//configs/SmallTrainer.config=UTF-8
+encoding//configs/TXTImportExport.config=UTF-8
+encoding//configs/TXTImportExportMultiSolution.config=UTF-8
 encoding//configs/default.config=UTF-8

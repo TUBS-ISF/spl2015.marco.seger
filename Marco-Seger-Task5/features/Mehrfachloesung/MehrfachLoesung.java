@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import de.tubs.spl.seger.AnzahlLoesung;
-
 public class MehrfachLoesung implements AnzahlLoesung {
 
 	@Override

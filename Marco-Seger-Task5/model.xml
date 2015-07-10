@@ -10,13 +10,13 @@
 				<and name="VokabelExport">
 					<feature abstract="true" name="DatenbankExport"/>
 					<feature abstract="true" name="JSONExport"/>
-					<feature name="XMLExport"/>
+					<feature abstract="true" name="XMLExport"/>
 					<feature name="TXTExport"/>
 				</and>
 				<and name="VokabelImport">
 					<feature abstract="true" name="DatenbankImport"/>
 					<feature abstract="true" name="JSONImport"/>
-					<feature name="XMLImport"/>
+					<feature abstract="true" name="XMLImport"/>
 					<feature name="TXTImport"/>
 				</and>
 				<and abstract="true" name="Statistik">
@@ -28,7 +28,7 @@
 					<feature mandatory="true" name="Mehrfachloesung"/>
 					<feature mandatory="true" name="Einfachloesung"/>
 				</alt>
-				<feature name="VokabelAnlegen"/>
+				<feature abstract="true" name="VokabelAnlegen"/>
 				<and abstract="true" name="Benutzerverwaltung">
 					<feature abstract="true" name="Login"/>
 				</and>
