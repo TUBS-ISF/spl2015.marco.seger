@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<featureModel chosenLayoutAlgorithm="1">
+		<struct>
+			<and mandatory="true" name="Vokabeltrainer">
+				<or mandatory="true" name="Reihenfolge">
+					<feature mandatory="true" name="ZufaelligeReihenfolge"/>
+					<feature mandatory="true" name="ChronologischeReihenfolge"/>
+					<feature abstract="true" mandatory="true" name="StatistikorientierteReihenfolge"/>
+				</or>
+				<and name="VokabelExport">
+					<feature abstract="true" name="DatenbankExport"/>
+					<feature abstract="true" name="JSONExport"/>
+					<feature abstract="true" name="XMLExport"/>
+					<feature name="TXTExport"/>
+				</and>
+				<and name="VokabelImport">
+					<feature abstract="true" name="DatenbankImport"/>
+					<feature abstract="true" name="JSONImport"/>
+					<feature abstract="true" name="XMLImport"/>
+					<feature name="TXTImport"/>
+				</and>
+				<and abstract="true" name="Statistik">
+					<feature abstract="true" name="BenutzerspezifischeStatistik"/>
+					<feature abstract="true" name="PersistierteStatistik"/>
+					<feature abstract="true" name="SessionStatistik"/>
+				</and>
+				<alt mandatory="true" name="AnzahlUebersetzungen">
+					<feature mandatory="true" name="Mehrfachloesung"/>
+					<feature mandatory="true" name="Einfachloesung"/>
+				</alt>
+				<feature abstract="true" name="VokabelAnlegen"/>
+				<and abstract="true" name="Benutzerverwaltung">
+					<feature abstract="true" name="Login"/>
+				</and>
+			</and>
+		</struct>
+		<constraints>
+			<rule>
+				<imp>
+					<var>StatistikorientierteReihenfolge</var>
+					<var>Statistik</var>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<var>VokabelExport</var>
+					<disj>
+						<var>VokabelImport</var>
+						<var>VokabelAnlegen</var>
+					</disj>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<var>BenutzerspezifischeStatistik</var>
+					<var>Benutzerverwaltung</var>
+				</imp>
+			</rule>
+		</constraints>
+		<calculations Auto="true" Constraints="true" Features="true" Redundant="true" Tautology="true"/>
+		<comments/>
+		<featureOrder userDefined="false"/>
+	</featureModel>
