@@ -6,6 +6,11 @@ import javax.swing.JOptionPane;
 
 public aspect Mehrfachloesung {
 
+	after() : call(Vokabeltrainer.new()){
+		private AnzahlLoesung loesung = new MehrfachLoesung();
+	}
+	
+
 class MehrfachLoesung implements AnzahlLoesung {
 
 	@Override

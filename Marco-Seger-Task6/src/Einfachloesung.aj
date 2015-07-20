@@ -2,7 +2,12 @@ import javax.swing.JOptionPane;
 
 public aspect Einfachloesung {
 
-class EinfachLoesung implements AnzahlLoesung {
+	after() : call(Vokabeltrainer.new()){
+		private AnzahlLoesung loesung = new EinfachLoesung();
+	}
+
+
+	class EinfachLoesung implements AnzahlLoesung {
 
 	@Override
 	public Vokabel openAddDialog() {

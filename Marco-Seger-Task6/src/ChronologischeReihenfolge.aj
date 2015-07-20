@@ -1,5 +1,23 @@
 
 public aspect ChronologischeReihenfolge {
+	after() : call(Vokabeltrainer.new()){
+		JRadioButtonMenuItem menuItemChronologisch = new JRadioButtonMenuItem(
+				"Chronologisch");
+		menuReihenfolge.add(menuItemChronologisch);
+		group.add(menuItemChronologisch);
+		menuItemChronologisch.setSelected(true);
+		menuItemChronologisch.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Vokabeltrainer.this.reihenfolge = new ChronologischeReihenfolge(
+						vokabelliste);
+			}
+		});
+		
+		reihenfolge = new ChronologischeReihenfolge(vokabelliste);
+	
+	}
 	
 	class ChronologischeReihenfolge implements Reihenfolge {
 
